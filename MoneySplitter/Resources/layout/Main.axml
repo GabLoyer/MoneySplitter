@@ -4,19 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:minWidth="25px"
-    android:minHeight="25px">
+    android:minHeight="25px"
+    android:id="@+id/linearRoot">
     <LinearLayout
         android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout6"
         android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2" />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout6">
+        android:minHeight="25px">
         <ImageView
             android:src="@android:drawable/ic_menu_gallery"
             android:id="@+id/imageView1"
@@ -114,25 +110,11 @@
             android:layout_height="match_parent"
             android:id="@+id/textTotal2" />
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout7" />
     <Button
         android:text="Add People"
         android:id="@+id/btnPeople"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:minWidth="25px"
-        android:minHeight="25px" />
     <Button
         android:text="Calculate"
         android:layout_width="match_parent"

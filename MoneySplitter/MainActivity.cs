@@ -14,15 +14,18 @@ namespace MoneySplitter
     {
         List<EditText> listTextMontants;
         List<EditText> listTextTotaux;
-        List<Button> listBtnAdd;
+        List<Button> listBtnAddMtn;
         List<CheckBox> listChkTax;
+        List<EditText> listPeoples;
 
         Button btnCalculate;
 
         List<float> montants;
 
         float TAX_TPS = 5;
-        float TAX_TVQ = 9.975f; 
+        float TAX_TVQ = 9.975f;
+
+        int NbPeople;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -39,39 +42,45 @@ namespace MoneySplitter
 
             EditText textMontant1;
             EditText textMontant2;
+            EditText textName1;
+            EditText textName2;
             EditText textTotal1;
             EditText textTotal2;
-            Button btnAdd1;
-            Button btnAdd2;
+            Button btnAddMtn1;
+            Button btnAddMtn2;
             CheckBox chkTax1;
             CheckBox chkTax2;
+            Button btnAddPeople;
 
             //Initialize variables
             textMontant1 = FindViewById<EditText>(Resource.Id.textMontant1);
             textMontant2 = FindViewById<EditText>(Resource.Id.textMontant2);
             textTotal1 = FindViewById<EditText>(Resource.Id.textTotal1);
             textTotal2 = FindViewById<EditText>(Resource.Id.textTotal2);
+            textName1 = FindViewById<EditText>(Resource.Id.textName1);
+            textName2 = FindViewById<EditText>(Resource.Id.textName2);
 
-            
 
             //Initialize buttons
-            btnAdd1 = FindViewById<Button>(Resource.Id.btnAdd1);
-            btnAdd2 = FindViewById<Button>(Resource.Id.btnAdd2);
+            btnAddMtn1 = FindViewById<Button>(Resource.Id.btnAdd1);
+            btnAddMtn2 = FindViewById<Button>(Resource.Id.btnAdd2);
 
             btnCalculate = FindViewById<Button>(Resource.Id.btnCalculate);
 
-            btnAdd1.Enabled = false;
-            btnAdd2.Enabled = false;
+            btnAddPeople = FindViewById<Button>(Resource.Id.btnPeople);
 
+            btnAddMtn1.Enabled = false;
+            btnAddMtn2.Enabled = false;
 
+            
             //Initialize CheckBox
             chkTax1 = FindViewById<CheckBox>(Resource.Id.chkTax1);
             chkTax2 = FindViewById<CheckBox>(Resource.Id.chkTax2);
 
             //Initialize all lists
-            listBtnAdd = new List<Button>();
-            listBtnAdd.Add(btnAdd1);
-            listBtnAdd.Add(btnAdd2);
+            listBtnAddMtn = new List<Button>();
+            listBtnAddMtn.Add(btnAddMtn1);
+            listBtnAddMtn.Add(btnAddMtn2);
 
             listTextMontants = new List<EditText>();
             listTextMontants.Add(textMontant1);
@@ -81,6 +90,11 @@ namespace MoneySplitter
             listTextTotaux.Add(textTotal1);
             listTextTotaux.Add(textTotal2);
 
+            listPeoples = new List<EditText>();
+            listPeoples.Add(textName1);
+            listPeoples.Add(textName2);
+
+
             montants = new List<float>();
             montants.Add(0);
             montants.Add(0);
@@ -89,22 +103,138 @@ namespace MoneySplitter
             listChkTax.Add(chkTax1);
             listChkTax.Add(chkTax2);
 
+            //add listeners on text changed to enable button add
             foreach (EditText text in listTextMontants)
             {
                 text.TextChanged += TextMontant_TextChanged;
             }
 
-            foreach (Button btnAdd in listBtnAdd)
+            //add listeners on add to add montant to total
+            foreach (Button btnAdd in listBtnAddMtn)
             {
-                btnAdd.Click += BtnAdd_Click;
+                btnAdd.Click += BtnAddMtn_Click;
             }
 
+            //add listeners on add people btn
+            btnAddPeople.Click += BtnAddPeople_Click;
+
+            btnCalculate.Click += btnCalculate_Click;
+
+            NbPeople = 2;
         }
 
-        private void BtnAdd_Click(object sender, EventArgs e)
+        private void btnCalculate_Click(object sender, EventArgs e)
+        {
+            float TotalGlobal = 0;
+
+            foreach (EditText totalText in listTextTotaux)
+            {
+                if (!String.IsNullOrWhiteSpace(totalText.Text))
+                {
+                    float total = float.Parse(totalText.Text);
+                    TotalGlobal += total;
+                }                
+            }
+
+            var textTotal = new TextView(this)
+            {
+                Text = "Total Global : " + TotalGlobal.ToString()
+            };
+            LinearLayout layout = this.FindViewById<LinearLayout>(Resource.Id.linearRoot);
+            layout.AddView(textTotal);
+
+            for (int i = 0; i < listPeoples.Count; ++i)
+            {
+                float contribution = 0;
+                if (!String.IsNullOrWhiteSpace(listTextTotaux[i].Text))
+                {
+                    contribution = float.Parse(listTextTotaux[i].Text);
+                }
+                else
+                {
+                    contribution = 0;
+                }
+                var textContribution = new TextView(this)
+                {
+                    Text = listPeoples[i].Text + " -> Montant à Balancer = " + ((TotalGlobal / (float)listPeoples.Count) - contribution).ToString()
+                };
+
+                layout.AddView(textContribution);
+            }
+        }
+
+        private void BtnAddPeople_Click(object sender, EventArgs e)
+        {
+            LinearLayout layoutPeople = this.FindViewById<LinearLayout>(Resource.Id.linearRoot);
+
+            var layout1 = new LinearLayout(this)
+            {
+                Orientation = Orientation.Horizontal,
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent)
+            };
+            var editTextName = new EditText(this)
+            {
+                Text = "Bob"
+            };
+            layout1.AddView(editTextName);
+
+            layoutPeople.AddView(layout1);
+
+            var layout2 = new LinearLayout(this)
+            {
+                Orientation = Orientation.Horizontal,
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent)
+            };
+            var editMtn = new EditText(this)
+            {
+                Text = "Add Montant ...",
+                InputType = Android.Text.InputTypes.NumberFlagDecimal
+                
+            };
+            var chkTax = new CheckBox(this)
+            {
+                Text = "+ Tax",
+                Checked = true
+            };
+            var btnAdd = new Button(this)
+            {
+                Text = "Add",
+                Enabled = false
+            };
+            var textlabel = new EditText(this)
+            {
+                Text = "Total:",
+                Focusable = false                
+            };
+            var textTotal = new EditText(this)
+            {
+                Text = "",
+                InputType = Android.Text.InputTypes.NumberFlagDecimal
+            };
+            layout2.AddView(editMtn);
+            layout2.AddView(chkTax);
+            layout2.AddView(btnAdd);
+            layout2.AddView(textlabel);
+            layout2.AddView(textTotal);
+
+            editMtn.TextChanged += TextMontant_TextChanged;
+            btnAdd.Click += BtnAddMtn_Click;
+
+            listBtnAddMtn.Add(btnAdd);
+            listChkTax.Add(chkTax);
+            listTextMontants.Add(editMtn);
+            listTextTotaux.Add(textTotal);
+            listPeoples.Add(editTextName);
+            
+            layoutPeople.AddView(layout2);
+
+            ++NbPeople;
+        }
+
+        private void BtnAddMtn_Click(object sender, EventArgs e)
         {
             Button btnAdd = (Button)sender;
-            int index = listBtnAdd.IndexOf(btnAdd);
+            int index = listBtnAddMtn.IndexOf(btnAdd);
 
             float montant = montants[index];
             
@@ -137,9 +267,11 @@ namespace MoneySplitter
             {
                 int index = listTextMontants.IndexOf(textMontant);
                 montants[index] = float.Parse(textMontant.Text);
-                listBtnAdd[index].Enabled = true;       
+                listBtnAddMtn[index].Enabled = true;       
             }
         }
+
+
     }
 }
 
