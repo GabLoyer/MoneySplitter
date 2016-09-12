@@ -127,6 +127,7 @@ namespace MoneySplitter
         {
             float TotalGlobal = 0;
 
+            //Calculate the total montant of all bills
             foreach (EditText totalText in listTextTotaux)
             {
                 if (!String.IsNullOrWhiteSpace(totalText.Text))
@@ -165,7 +166,10 @@ namespace MoneySplitter
 
         private void BtnAddPeople_Click(object sender, EventArgs e)
         {
-            LinearLayout layoutPeople = this.FindViewById<LinearLayout>(Resource.Id.linearRoot);
+            //Create a new line that correspond to a new people
+            //So need to create all the buttons and labels corresponding to a people
+
+            LinearLayout layoutPeople = this.FindViewById<LinearLayout>(Resource.Id.linearPeople);
 
             var layout1 = new LinearLayout(this)
             {
@@ -188,8 +192,7 @@ namespace MoneySplitter
             var editMtn = new EditText(this)
             {
                 Text = "Add Montant ...",
-                InputType = Android.Text.InputTypes.NumberFlagDecimal
-                
+                InputType = Android.Text.InputTypes.NumberFlagDecimal                
             };
             var chkTax = new CheckBox(this)
             {
@@ -226,6 +229,7 @@ namespace MoneySplitter
             listTextTotaux.Add(textTotal);
             listPeoples.Add(editTextName);
             
+            //Add it to the view  
             layoutPeople.AddView(layout2);
 
             ++NbPeople;

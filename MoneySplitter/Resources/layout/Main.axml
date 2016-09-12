@@ -7,108 +7,116 @@
     android:minHeight="25px"
     android:id="@+id/linearRoot">
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout6"
         android:minWidth="25px"
-        android:minHeight="25px">
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-        <EditText
-            android:inputType="textPersonName"
-            android:id="@+id/textName1"
-            android:text="Bob"
+        android:minHeight="25px"
+        android:id="@+id/linearPeople">
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout3">
-        <EditText
-            android:inputType="numberDecimal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/textMontant1"
-            android:hint="Add Montant" />
-        <CheckBox
-            android:text="+Tax"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/chkTax1"
-            android:checked="true" />
-        <Button
-            android:text="Add"
-            android:id="@+id/btnAdd1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="0.0dp"
-            android:layout_marginTop="0.0dp" />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/editText1"
-            android:text="Total :" />
-        <EditText
-            android:inputType="numberDecimal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/textTotal1" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout5">
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-        <EditText
-            android:inputType="textPersonName"
-            android:id="@+id/textName2"
-            android:text="Rachel"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout6"
+            android:minWidth="25px"
+            android:minHeight="25px">
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <EditText
+                android:inputType="textPersonName"
+                android:id="@+id/textName1"
+                android:text="Bob"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout4">
-        <EditText
-            android:inputType="numberDecimal"
-            android:id="@+id/textMontant2"
-            android:hint="Add Montant"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-        <CheckBox
-            android:text="+Tax"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/chkTax2"
-            android:checked="true" />
-        <Button
-            android:text="Add"
-            android:id="@+id/btnAdd2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/editText1"
-            android:text="Total:" />
-        <EditText
-            android:inputType="numberDecimal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/textTotal2" />
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout3">
+            <EditText
+                android:inputType="numberDecimal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textMontant1"
+                android:hint="Add Montant" />
+            <CheckBox
+                android:text="+Tax"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/chkTax1"
+                android:checked="true" />
+            <Button
+                android:text="Add"
+                android:id="@+id/btnAdd1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="0.0dp"
+                android:layout_marginTop="0.0dp" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/editText1"
+                android:text="Total :" />
+            <EditText
+                android:inputType="numberDecimal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textTotal1" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout5">
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <EditText
+                android:inputType="textPersonName"
+                android:id="@+id/textName2"
+                android:text="Rachel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout4">
+            <EditText
+                android:inputType="numberDecimal"
+                android:id="@+id/textMontant2"
+                android:hint="Add Montant"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <CheckBox
+                android:text="+Tax"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/chkTax2"
+                android:checked="true" />
+            <Button
+                android:text="Add"
+                android:id="@+id/btnAdd2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/editText1"
+                android:text="Total:" />
+            <EditText
+                android:inputType="numberDecimal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textTotal2" />
+        </LinearLayout>
     </LinearLayout>
     <Button
         android:text="Add People"
