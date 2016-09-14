@@ -17,6 +17,7 @@ namespace MoneySplitter
         List<Button> listBtnAddMtn;
         List<CheckBox> listChkTax;
         List<EditText> listPeoples;
+        List<Spinner> listSpinners;
 
         Button btnCalculate;
 
@@ -52,6 +53,9 @@ namespace MoneySplitter
             CheckBox chkTax2;
             Button btnAddPeople;
 
+            Spinner spinnerWeight1;
+            Spinner spinnerWeight2;
+
             //Initialize variables
             textMontant1 = FindViewById<EditText>(Resource.Id.textMontant1);
             textMontant2 = FindViewById<EditText>(Resource.Id.textMontant2);
@@ -77,6 +81,21 @@ namespace MoneySplitter
             chkTax1 = FindViewById<CheckBox>(Resource.Id.chkTax1);
             chkTax2 = FindViewById<CheckBox>(Resource.Id.chkTax2);
 
+            //Initialize Spinner 
+            spinnerWeight1 = FindViewById<Spinner>(Resource.Id.spinnerWeight1);
+            spinnerWeight2 = FindViewById<Spinner>(Resource.Id.spinnerWeight2);
+            
+            spinnerWeight1.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+            var adapter = ArrayAdapter.CreateFromResource(
+                    this, Resource.Array.Weight, Android.Resource.Layout.SimpleSpinnerItem);
+
+            adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+            spinnerWeight1.Adapter = adapter;
+
+            spinnerWeight2.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+            spinnerWeight2.Adapter = adapter;
+
+
             //Initialize all lists
             listBtnAddMtn = new List<Button>();
             listBtnAddMtn.Add(btnAddMtn1);
@@ -94,6 +113,9 @@ namespace MoneySplitter
             listPeoples.Add(textName1);
             listPeoples.Add(textName2);
 
+            listSpinners = new List<Spinner>();
+            listSpinners.Add(spinnerWeight1);
+            listSpinners.Add(spinnerWeight2);
 
             montants = new List<float>();
             montants.Add(0);
@@ -123,6 +145,13 @@ namespace MoneySplitter
             NbPeople = 2;
         }
 
+        private void spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            /*
+            Spinner spinner = (Spinner)sender;
+            int index = listSpinners.IndexOf(spinner);*/
+        }
+
         private void btnCalculate_Click(object sender, EventArgs e)
         {
             float TotalGlobal = 0;
@@ -139,10 +168,20 @@ namespace MoneySplitter
 
             var textTotal = new TextView(this)
             {
-                Text = "Total Global : " + TotalGlobal.ToString()
+                Text = "Total Global : " + TotalGlobal.ToString("c2")
             };
             LinearLayout layout = this.FindViewById<LinearLayout>(Resource.Id.linearRoot);
             layout.AddView(textTotal);
+
+            var textMoyenne = new TextView(this)
+            {
+                Text = "Moyenne des contributions : " + (TotalGlobal / (float)NbPeople).ToString("c2")
+            };
+            layout.AddView(textMoyenne);
+
+            var Weight = GetMaxWeight();
+            int MaxWeight = Weight.Item1;
+            int TotalWeight = Weight.Item2;
 
             for (int i = 0; i < listPeoples.Count; ++i)
             {
@@ -155,13 +194,31 @@ namespace MoneySplitter
                 {
                     contribution = 0;
                 }
+                float poids = float.Parse(listSpinners[i].SelectedItem.ToString());
+                float montantToPay = TotalGlobal * (poids / TotalWeight) - contribution;
+
                 var textContribution = new TextView(this)
                 {
-                    Text = listPeoples[i].Text + " -> Montant à Balancer = " + ((TotalGlobal / (float)listPeoples.Count) - contribution).ToString()
+                    Text = listPeoples[i].Text + " -> Montant à Balancer = " + (montantToPay).ToString("c2")
                 };
 
                 layout.AddView(textContribution);
             }
+        }
+
+        private Tuple<int, int> GetMaxWeight()
+        {
+            int TotalWeight = 0, MaxWeight = 0;
+            foreach (Spinner spinner in listSpinners)
+            {
+                int weight = int.Parse(spinner.SelectedItem.ToString());
+                if (weight > MaxWeight)
+                {
+                    MaxWeight = weight;
+                }
+                TotalWeight += weight;
+            }
+            return new Tuple<int, int>(MaxWeight, TotalWeight);
         }
 
         private void BtnAddPeople_Click(object sender, EventArgs e)
@@ -174,12 +231,25 @@ namespace MoneySplitter
             var layout1 = new LinearLayout(this)
             {
                 Orientation = Orientation.Horizontal,
-                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent)
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent)
             };
+            var spinnerWeight = new Spinner(this)
+            {
+                
+            };
+            spinnerWeight.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+            var adapter = ArrayAdapter.CreateFromResource(
+                    this, Resource.Array.Weight, Android.Resource.Layout.SimpleSpinnerItem);
+
+            adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+            spinnerWeight.Adapter = adapter;
             var editTextName = new EditText(this)
             {
-                Text = "Bob"
+                Text = "Bob",
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent)
             };
+
+            layout1.AddView(spinnerWeight);
             layout1.AddView(editTextName);
 
             layoutPeople.AddView(layout1);
@@ -191,8 +261,8 @@ namespace MoneySplitter
             };
             var editMtn = new EditText(this)
             {
-                Text = "Add Montant ...",
-                InputType = Android.Text.InputTypes.NumberFlagDecimal                
+                Hint = "Add Montant",
+                InputType = Android.Text.InputTypes.ClassNumber
             };
             var chkTax = new CheckBox(this)
             {
@@ -212,7 +282,7 @@ namespace MoneySplitter
             var textTotal = new EditText(this)
             {
                 Text = "",
-                InputType = Android.Text.InputTypes.NumberFlagDecimal
+                InputType = Android.Text.InputTypes.ClassNumber
             };
             layout2.AddView(editMtn);
             layout2.AddView(chkTax);
@@ -228,7 +298,10 @@ namespace MoneySplitter
             listTextMontants.Add(editMtn);
             listTextTotaux.Add(textTotal);
             listPeoples.Add(editTextName);
-            
+            listSpinners.Add(spinnerWeight);
+
+            montants.Add(0);
+
             //Add it to the view  
             layoutPeople.AddView(layout2);
 

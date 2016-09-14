@@ -20,6 +20,10 @@
             android:id="@+id/linearLayout6"
             android:minWidth="25px"
             android:minHeight="25px">
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/spinnerWeight1" />
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:id="@+id/imageView1"
@@ -72,6 +76,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout5">
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/spinnerWeight2" />
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:id="@+id/imageView1"
