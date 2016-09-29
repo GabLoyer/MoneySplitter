@@ -21,6 +21,8 @@ namespace MoneySplitter
 
         Button btnCalculate;
 
+        LinearLayout layoutResult;
+
         List<float> montants;
 
         float TAX_TPS = 5;
@@ -154,6 +156,20 @@ namespace MoneySplitter
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
+            //Clean the result before if it isn't the first calculate
+            if (layoutResult != null)
+            {
+                layoutResult.RemoveAllViews();
+            }
+            layoutResult = new LinearLayout(this)
+            {
+                Orientation = Orientation.Vertical,
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent)
+            };
+
+            //Grab the root of view, to add the result at the end
+            LinearLayout layoutRoot = this.FindViewById<LinearLayout>(Resource.Id.linearRoot);
+
             float TotalGlobal = 0;
 
             //Calculate the total montant of all bills
@@ -166,19 +182,21 @@ namespace MoneySplitter
                 }                
             }
 
+            //Create the text view that will show the amount
             var textTotal = new TextView(this)
             {
                 Text = "Total Global : " + TotalGlobal.ToString("c2")
             };
-            LinearLayout layout = this.FindViewById<LinearLayout>(Resource.Id.linearRoot);
-            layout.AddView(textTotal);
+
+            layoutResult.AddView(textTotal);
 
             var textMoyenne = new TextView(this)
             {
                 Text = "Moyenne des contributions : " + (TotalGlobal / (float)NbPeople).ToString("c2")
             };
-            layout.AddView(textMoyenne);
+            layoutResult.AddView(textMoyenne);
 
+            //Calculate the amount du to each person
             var Weight = GetMaxWeight();
             int MaxWeight = Weight.Item1;
             int TotalWeight = Weight.Item2;
@@ -202,8 +220,10 @@ namespace MoneySplitter
                     Text = listPeoples[i].Text + " -> Montant à Balancer = " + (montantToPay).ToString("c2")
                 };
 
-                layout.AddView(textContribution);
+                layoutResult.AddView(textContribution);
             }
+
+            layoutRoot.AddView(layoutResult);
         }
 
         private Tuple<int, int> GetMaxWeight()
@@ -334,7 +354,7 @@ namespace MoneySplitter
 
             //Clear TextMontants
             listTextMontants[index].Text = "";
-            listTextMontants[index].Enabled = false;
+            listBtnAddMtn[index].Enabled = false;
         }
 
         private void TextMontant_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
